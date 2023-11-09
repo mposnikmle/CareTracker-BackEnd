@@ -1,7 +1,13 @@
-require("dotenv").config();
+require(`dotenv`).config();
 const express = require("express");
 const app = express();
+
 const staffController = require("./controllers/staff.controller");
+const scheduleController = require("./controllers/schedule.controller")
+const noteController = require("./controllers/note.controller");
+
+const cors = require("cors");
+
 
 const mongoose = require("mongoose");
 
@@ -15,10 +21,19 @@ db.once("open", () => {
     console.log("connected to the DB", DBName);
 });
 
+app.use(express.json());
+
+app.use(cors());
+
+app.use("/note", noteController);
+app.use("/schedule", scheduleController);
+app.use("/staff", staffController);
+
 app.listen(PORT, () => {
     console.log(`server is running on port: ${PORT}`);
 });
 
-app.use(express.json());
 
-app.use("/staff", staffController);
+
+
+  

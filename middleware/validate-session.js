@@ -7,7 +7,7 @@ const validateSession = async (req, res, next) => {
 
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await Staff.findById(decodedToken.id);
+        const staff = await Staff.findById(decodedToken.id);
 
         if (!staff) {
             throw new Error("Staff member not found");

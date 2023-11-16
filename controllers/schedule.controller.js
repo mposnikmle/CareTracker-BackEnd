@@ -1,7 +1,8 @@
 const router = require("express").Router();
+const validateSession = require("../middleware/validate-session");
 const Schedule = require("../models/schedule.model");
 
-router.get("/viewScheduledShifts", async (req, res) => {
+router.get("/viewScheduledShifts", validateSession, async (req, res) => {
     try {
         // * Retrieve all scheduled shifts
         const scheduledShifts = await Schedule.find();
@@ -12,7 +13,7 @@ router.get("/viewScheduledShifts", async (req, res) => {
     }
 });
 
-router.post("/addShift", async (req, res) => {
+router.post("/addShift", validateSession, async (req, res) => {
     try {
         const {
             staff,
@@ -21,7 +22,8 @@ router.post("/addShift", async (req, res) => {
             shiftStart,
             shiftEnd,
             isAwake,
-            hoursTotal
+            hoursTotal,
+            eventColor // Add color property to the request body
         } = req.body;
 
         // * Create a new Schedule instance
@@ -32,7 +34,8 @@ router.post("/addShift", async (req, res) => {
             shiftStart,
             shiftEnd,
             isAwake,
-            hoursTotal
+            hoursTotal,
+            eventColor // Include color in the Schedule instance
         });
 
         // * Save the new shift to the database
@@ -44,7 +47,8 @@ router.post("/addShift", async (req, res) => {
     }
 });
 
-router.get("/viewShift/:id", async (req, res) => {
+
+router.get("/viewShift/:id", validateSession, async (req, res) => {
     try {
         const shiftId = req.params.id;
 
@@ -61,7 +65,7 @@ router.get("/viewShift/:id", async (req, res) => {
     }
 });
 
-router.delete("/deleteShift/:id", async (req, res) => {
+router.delete("/deleteShift/:id", validateSession, async (req, res) => {
     try {
         const shiftId = req.params.id;
 
@@ -80,7 +84,7 @@ router.delete("/deleteShift/:id", async (req, res) => {
     }
 });
 
-router.patch("/updateShift/:id", async (req, res) => {
+router.patch("/updateShift/:id", validateSession, async (req, res) => {
     try {
         const shiftId = req.params.id;
         const updateData = req.body;

@@ -30,12 +30,16 @@ const ScheduleSchema = new mongoose.Schema(
         // * Total hours in a shift
         hoursTotal: {
             type: Number,
-            required: true
         },
         // * Type of hours - Awake/Asleep
         isAwake: {
             type: Boolean,
             required: true
+        },
+        // * Color of the event
+        eventColor: {
+            type: String, // You can adjust the type based on your color representation
+            default: "#4CAF50" // Set a default color if needed
         }
     }
 );

@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 
 // staff register endpoint
 router.post("/register", async (req, res) => {
-
+  
     try {
         const {company, role, firstname, lastname, email, password} = req.body;
 
@@ -31,6 +31,7 @@ router.post("/register", async (req, res) => {
 
 // staff sign-in endpoint
 router.post("/signin", async (req, res) => {
+
 
   try {
     const { email, password } = req.body;

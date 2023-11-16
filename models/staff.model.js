@@ -29,8 +29,12 @@ const StaffSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Staff"
     },
-    /*canEditRoles: {
+   
+  /*canEditStaffRoles: {
         type: Boolean
+    },
+    canEditResidentRoles: {
+      type: Boolean
     },
     imageURL: {
         type: String

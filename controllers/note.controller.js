@@ -1,8 +1,3 @@
-// /note/add	POST
-// /note/updatebyID	PATCH
-// /note/deletebyID	DELETE
-// /note/view-note/:id	GET
-
 const router = require("express").Router();
 const Note = require("../models/note.model");
 
@@ -15,7 +10,7 @@ router.post("/add", async (req, res) => {
       firstName: firstName,
       lastName: lastName,
       staffID: staffID,
-      residentID: residentID,
+      residentID: residentID
     });
     const newNote = await note.save();
     res.json({ message: "new note created and connecting", name: newNote });
@@ -24,12 +19,12 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// Todo: View a note by id look over the populate function
+// ! Check that this is actually populating. I believe it is not needed and should be removed
 router.get("/view-note/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const note = await Note.findById(id).populate("residentID");
-    res.json({ message: "Success from get", note: note });
+    res.json({ message: "Showing Note by ID", Note: note });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -51,12 +46,12 @@ router.patch("/update/:id", async (req, res) => {
     const id = req.params.id;
     const data = req.body;
     const options = { new: true };
-    const note = await Note.findById(id, data, options);
+    const note = await Note.findByIdAndUpdate(id, data, options);
 
     if (!note) {
       throw new Error("Note not found");
     }
-    res.json({ message: "working", id: id, data: data });
+    res.json({ message: "working", id: id, data: data, options: options });
   } catch (error) {
     res.status(500).json({ message: `${error}` });
   }
@@ -71,7 +66,7 @@ router.delete("/delete/:id", async (req, res) => {
       message:
         note.deletedCount === 1
           ? "Success, note was deleted"
-          : "Error, note was not found",
+          : "Error, note was not found"
     });
   } catch (error) {
     res.status(500).json({ message: `${error}` });

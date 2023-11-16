@@ -6,31 +6,32 @@ const bcrypt = require("bcrypt");
 
 // staff register endpoint
 router.post("/register", async (req, res) => {
-  try {
-    const { role, firstname, lastname, email, password } = req.body;
 
-    const staff = new Staff({
-      role: role,
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      password: bcrypt.hashSync(password, 10)
-    });
+    try {
+        const {company, role, firstname, lastname, email, password} = req.body;
 
-    const newStaff = await staff.save();
+        const staff = new Staff({
+            company: company,
+            role: role,
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            password: bcrypt.hashSync(password, 10)
+        });
 
-    const token = jwt.sign({ id: newStaff._id }, process.env.JWT_SECRET, {
-      expiresIn: 14 * 24 * 60 * 60
-    });
+        const newStaff = await staff.save();
 
-    res.json({ message: "add endpoint", staff: newStaff, token, token });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+        const token = jwt.sign({id: newStaff._id}, process.env.JWT_SECRET, {expiresIn: 7*24*60*60});
+
+        res.json({message: "add endpoint", staff: newStaff, token, token});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
 });
 
 // staff sign-in endpoint
 router.post("/signin", async (req, res) => {
+
   try {
     const { email, password } = req.body;
 
@@ -45,9 +46,9 @@ router.post("/signin", async (req, res) => {
       throw new Error("Incorrect password");
     }
 
-    let token = jwt.sign({ id: staff._id }, process.env.JWT_SECRET, {
-      expiresIn: 14 * 24 * 60 * 60
-    });
+
+    let token = jwt.sign({id: staff._id}, process.env.JWT_SECRET, {expiresIn: 7*24*60*60});
+
 
     res.json({ message: "signin endpoint", staff: staff, token: token });
   } catch (error) {

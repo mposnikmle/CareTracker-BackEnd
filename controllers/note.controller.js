@@ -51,7 +51,7 @@ router.patch("/update/:id", async (req, res) => {
     const id = req.params.id;
     const data = req.body;
     const options = { new: true };
-    const note = await Note.findById(id, data, options);
+    const note = await Note.findByIdAndUpdate(id, data, options);
 
     if (!note) {
       throw new Error("Note not found");

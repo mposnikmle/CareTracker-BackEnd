@@ -5,11 +5,12 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 // staff register endpoint
-router.post("/register", validateSession, async (req, res) => {
+router.post("/register", async (req, res) => {
     try {
-        const {role, firstname, lastname, email, password} = req.body;
+        const {company, role, firstname, lastname, email, password} = req.body;
 
         const staff = new Staff({
+            company: company,
             role: role,
             firstname: firstname,
             lastname: lastname,
@@ -28,7 +29,7 @@ router.post("/register", validateSession, async (req, res) => {
 });
 
 // staff sign-in endpoint
-router.post("/signin", validateSession, async (req, res) => {
+router.post("/signin", async (req, res) => {
     try {
         const {email, password} = req.body;
 
@@ -43,7 +44,7 @@ router.post("/signin", validateSession, async (req, res) => {
             throw new Error("Incorrect password");
         }
 
-        let token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: 7*24*60*60});
+        let token = jwt.sign({id: staff._id}, process.env.JWT_SECRET, {expiresIn: 7*24*60*60});
 
         res.json({message: "signin endpoint", staff: staff, token: token});
     } catch (error) {

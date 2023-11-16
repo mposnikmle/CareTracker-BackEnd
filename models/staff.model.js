@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 
-// ! use Staff instead of User for protection?
+
 const StaffSchema = new mongoose.Schema({
-    role: {
+    company: {
         type: String,
+        required: true
+    },
+    role: {
+        type: Array,
         required: true
     },
     firstname: {
